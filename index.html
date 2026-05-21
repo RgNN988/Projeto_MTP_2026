@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Telescópio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-deep: #030a14;
+      --bg-surface: #0b1524;
+      --bg-elevated: #111f35;
+      --primary: #00d4cc;
+      --primary-dim: rgba(0,212,204,0.10);
+      --primary-glow: rgba(0,212,204,0.35);
+      --secondary: #ff8c42;
+      --secondary-dim: rgba(255,140,66,0.10);
+      --text: #d8eaf0;
+      --text-muted: #5b7a8a;
+      --border: rgba(0,212,204,0.14);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-deep);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* Typography */
+    h1,h2,h3 { font-family:'Syne',sans-serif; letter-spacing:-0.03em; line-height:1.1; }
+    .font-mono { font-family:'Space Mono',monospace; }
+
+    /* Keyframes */
+    @keyframes float {
+      0%,100% { transform:translateY(0); }
+      50% { transform:translateY(-14px); }
+    }
+    @keyframes pulse-glow {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.75; transform:scale(1.04); }
+    }
+    @keyframes fade-up {
+      from { opacity:0; transform:translateY(28px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    @keyframes spin-slow {
+      from { transform:rotate(0deg); }
+      to { transform:rotate(360deg); }
+    }
+    @keyframes scroll-wheel {
+      0%,100% { transform:translateY(0); opacity:1; }
+      50% { transform:translateY(8px); opacity:0.3; }
+    }
+    @keyframes scan {
+      0% { transform:translateY(-100%); opacity:0; }
+      10%,90% { opacity:0.5; }
+      100% { transform:translateY(400%); opacity:0; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity:0;
+      transform:translateY(30px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-d1 { transition-delay:0.1s; }
+    .reveal-d2 { transition-delay:0.2s; }
+    .reveal-d3 { transition-delay:0.3s; }
+
+    /* ── NAV ─────────────────────────────────────────────────────── */
+    #nav {
+      position:fixed; top:0; left:0; right:0; z-index:500;
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 2.5rem;
+      background:rgba(3,10,20,0.72);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo {
+      display:flex; align-items:center; gap:10px;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:1rem;
+      letter-spacing:-0.02em; color:var(--text); text-decoration:none;
+    }
+    .nav-logo svg { color:var(--primary); flex-shrink:0; }
+    .nav-links { display:flex; gap:2.25rem; list-style:none; }
+    .nav-links a {
+      font-family:'Space Mono',monospace; font-size:0.68rem;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--text-muted); text-decoration:none;
+      position:relative; padding-bottom:3px;
+      transition:color 0.3s ease;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-1px; left:0;
+      width:0; height:1px; background:var(--primary);
+      transition:width 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color:var(--primary); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width:100%; }
+    .nav-links a:focus-visible { outline:2px solid var(--primary); outline-offset:4px; border-radius:2px; }
+
+    /* ── HERO ────────────────────────────────────────────────────── */
+    #hero {
+      position:relative; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    #star-canvas { position:absolute; inset:0; z-index:0; }
+    .hero-bg {
+      position:absolute; inset:0; z-index:1;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 35%, rgba(0,55,75,0.6) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 35% at 78% 18%, rgba(255,140,66,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 18% 78%, rgba(0,212,204,0.05) 0%, transparent 55%),
+        linear-gradient(180deg, #030a14 0%, #030f1e 60%, #020a18 100%);
+    }
+    .hero-photo {
+      position:absolute; inset:0; z-index:2;
+      background:url('Acesso/telescopio-e1576107221750.jpg') center bottom/cover no-repeat;
+      opacity:0.15; mix-blend-mode:screen;
+    }
+    .hero-nebula-bg {
+      position:absolute; left:-8%; top:8%; z-index:2;
+      width:clamp(220px,32vw,520px); aspect-ratio:1;
+      background:url('Acesso/7077.jpg') center/cover;
+      opacity:0.08; border-radius:50%;
+      animation:spin-slow 140s linear infinite;
+      filter:blur(2px);
+    }
+    .hero-content {
+      position:relative; z-index:10;
+      text-align:center; padding:0 1.5rem;
+      max-width:780px;
+    }
+    .hero-eyebrow {
+      font-family:'Space Mono',monospace; font-size:0.68rem;
+      letter-spacing:0.22em; text-transform:uppercase; color:var(--primary);
+      display:flex; align-items:center; justify-content:center; gap:14px;
+      margin-bottom:1.75rem;
+      opacity:0; animation:fade-up 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+    .hero-eyebrow::before,.hero-eyebrow::after {
+      content:''; display:block; width:36px; height:1px;
+      background:var(--primary); opacity:0.45;
+    }
+    .hero-title {
+      font-family:'Syne',sans-serif; font-weight:800;
+      font-size:clamp(2rem,9vw,5rem);
+      letter-spacing:-0.04em; line-height:1.05;
+      background:linear-gradient(145deg, #ffffff 0%, #d8eaf0 35%, var(--primary) 72%, rgba(0,212,204,0.55) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      padding: 0.1em 0.1em;
+      margin-bottom:1.4rem;
+      white-space: nowrap;
+      opacity:0; animation:fade-up 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;
+    }
+    .hero-sub {
+      font-family:'Outfit',sans-serif; font-weight:300;
+      font-size:clamp(1rem,2.5vw,1.3rem);
+      color:var(--text-muted); letter-spacing:0.02em;
+      margin-bottom:2.75rem;
+      opacity:0; animation:fade-up 1s cubic-bezier(0.22,1,0.36,1) 0.7s forwards;
+    }
+    .hero-cta {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:0.9rem 2.2rem;
+      background:var(--primary-dim);
+      border:1px solid rgba(0,212,204,0.38);
+      border-radius:4px; color:var(--primary);
+      font-family:'Space Mono',monospace; font-size:0.72rem;
+      letter-spacing:0.14em; text-transform:uppercase;
+      text-decoration:none; cursor:pointer;
+      box-shadow:0 0 28px rgba(0,212,204,0.07), inset 0 1px 0 rgba(255,255,255,0.04);
+      transition:background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+      opacity:0; animation:fade-up 1s cubic-bezier(0.22,1,0.36,1) 0.9s forwards;
+    }
+    .hero-cta:hover {
+      background:rgba(0,212,204,0.18); border-color:var(--primary);
+      color:#fff; transform:translateY(-3px);
+      box-shadow:0 6px 30px rgba(0,212,204,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .hero-cta:active { transform:translateY(0); }
+    .hero-cta:focus-visible { outline:2px solid var(--primary); outline-offset:4px; }
+
+    /* Decorative right telescope */
+    .hero-scope {
+      position:absolute; right:4%; bottom:0; z-index:5;
+      width:clamp(180px,22vw,380px);
+      opacity:0.32; animation:float 7s ease-in-out infinite;
+      filter:drop-shadow(0 0 18px rgba(0,212,204,0.12));
+    }
+
+    /* Scroll mouse */
+    .scroll-hint {
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      z-index:10; display:flex; flex-direction:column; align-items:center; gap:8px;
+      opacity:0; animation:fade-up 1s ease 1.6s forwards;
+    }
+    .scroll-hint span {
+      font-family:'Space Mono',monospace; font-size:0.58rem;
+      letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted);
+    }
+    .scroll-mouse {
+      width:20px; height:34px; border:1px solid rgba(91,122,138,0.45);
+      border-radius:10px; display:flex; justify-content:center; padding-top:5px;
+    }
+    .scroll-wheel {
+      width:2.5px; height:7px; background:var(--primary); border-radius:2px;
+      animation:scroll-wheel 1.6s ease-in-out infinite;
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────────────── */
+    .divider {
+      width:100%; height:1px;
+      background:linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* ── SECTION BASE ────────────────────────────────────────────── */
+    .section { padding:7rem 2.5rem; max-width:1180px; margin:0 auto; }
+
+    .section-label {
+      font-family:'Space Mono',monospace; font-size:0.65rem;
+      letter-spacing:0.2em; text-transform:uppercase; color:var(--primary);
+      display:flex; align-items:center; gap:10px; margin-bottom:0.75rem;
+    }
+    .section-label::before {
+      content:''; display:block; width:22px; height:1px; background:var(--primary);
+    }
+    .section-title {
+      font-family:'Syne',sans-serif; font-weight:800;
+      font-size:clamp(2.1rem,5vw,3.6rem);
+      letter-spacing:-0.03em; color:var(--text); margin-bottom:1.25rem;
+    }
+    .section-desc {
+      font-size:1rem; color:var(--text-muted);
+      max-width:580px; line-height:1.8;
+    }
+
+    /* ── SOBRE ───────────────────────────────────────────────────── */
+    #sobre { position:relative; overflow:hidden; }
+    #sobre::before {
+      content:''; position:absolute; top:0; right:-8%; width:52%; height:100%;
+      background:url('Acesso/R.jpg') center/cover;
+      opacity:0.055; pointer-events:none;
+      mask-image:linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+      -webkit-mask-image:linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+    }
+    .sobre-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+    .stats-stack { display:flex; flex-direction:column; gap:1rem; }
+    .stat-card {
+      background:var(--bg-surface);
+      border:1px solid var(--border); border-radius:8px;
+      padding:1.5rem 1.75rem; position:relative; overflow:hidden;
+      box-shadow:0 2px 24px rgba(0,0,0,0.35);
+      transition:border-color 0.3s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    }
+    .stat-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,var(--primary),transparent);
+      opacity:0.55;
+    }
+    .stat-card:hover {
+      border-color:rgba(0,212,204,0.38); transform:translateY(-4px);
+      box-shadow:0 10px 48px rgba(0,0,0,0.4), 0 0 22px rgba(0,212,204,0.07);
+    }
+    .stat-number {
+      font-family:'Syne',sans-serif; font-weight:800; font-size:2.6rem;
+      color:var(--primary); letter-spacing:-0.03em; line-height:1;
+      margin-bottom:0.2rem;
+    }
+    .stat-label {
+      font-family:'Space Mono',monospace; font-size:0.67rem;
+      letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted);
+    }
+
+    /* ── EVOLUÇÃO ────────────────────────────────────────────────── */
+    #evolucao-bg {
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 0%, rgba(0,25,45,0.8) 0%, transparent 70%),
+        var(--bg-surface);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .evo-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:0; margin-top:4rem; position:relative;
+    }
+    .evo-grid::before {
+      content:''; position:absolute; top:76px; left:12.5%; right:12.5%;
+      height:1px;
+      background:linear-gradient(90deg, var(--primary) 0%, var(--primary) 36%, rgba(0,212,204,0.4) 50%, rgba(91,122,138,0.15) 72%, transparent 100%);
+      z-index:0;
+    }
+    .phase {
+      display:flex; flex-direction:column; align-items:center;
+      padding:0 1.25rem 2.5rem; text-align:center; position:relative;
+    }
+    .phase-dot {
+      width:56px; height:56px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:1.5rem; position:relative; z-index:1; flex-shrink:0;
+    }
+    .phase.active .phase-dot {
+      background:rgba(0,212,204,0.10);
+      border:1.5px solid rgba(0,212,204,0.55);
+      box-shadow:0 0 0 8px rgba(0,212,204,0.055), 0 0 28px rgba(0,212,204,0.22);
+      animation:pulse-glow 3.2s ease-in-out infinite;
+    }
+    .phase.locked .phase-dot {
+      background:rgba(11,21,36,0.8);
+      border:1px solid rgba(91,122,138,0.18);
+    }
+    .phase-num {
+      font-family:'Space Mono',monospace; font-size:0.6rem;
+      letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.4rem;
+    }
+    .phase.active .phase-num { color:var(--primary); }
+    .phase.locked .phase-num { color:var(--text-muted); }
+    .phase-name {
+      font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700;
+      letter-spacing:-0.01em; margin-bottom:0.45rem;
+    }
+    .phase.active .phase-name { color:var(--text); }
+    .phase.locked .phase-name { color:rgba(91,122,138,0.7); }
+    .phase-desc { font-size:0.82rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.75rem; }
+    .phase-badge {
+      font-family:'Space Mono',monospace; font-size:0.58rem;
+      letter-spacing:0.12em; text-transform:uppercase;
+      padding:3px 10px; border-radius:20px;
+    }
+    .phase.active .phase-badge {
+      background:rgba(0,212,204,0.1); color:var(--primary);
+      border:1px solid rgba(0,212,204,0.28);
+    }
+    .phase.locked .phase-badge {
+      background:rgba(11,21,36,0.5); color:var(--text-muted);
+      border:1px solid rgba(91,122,138,0.12);
+    }
+
+    /* ── ENTREGÁVEIS ─────────────────────────────────────────────── */
+    .cards-grid {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:1.5rem; margin-top:3rem;
+    }
+    .e-card {
+      background:var(--bg-surface); border:1px solid var(--border);
+      border-radius:12px; padding:2rem;
+      display:flex; flex-direction:column; gap:1rem;
+      cursor:pointer; position:relative; overflow:hidden;
+      box-shadow:0 2px 24px rgba(0,0,0,0.28);
+      transition:border-color 0.3s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    }
+    .e-card::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,var(--primary),var(--secondary));
+      transform:scaleX(0); transform-origin:left;
+      transition:transform 0.42s cubic-bezier(0.22,1,0.36,1);
+    }
+    .e-card:hover {
+      border-color:rgba(0,212,204,0.32); transform:translateY(-6px);
+      box-shadow:0 14px 56px rgba(0,0,0,0.4), 0 0 28px rgba(0,212,204,0.055);
+    }
+    .e-card:hover::after { transform:scaleX(1); }
+    .e-card:active { transform:translateY(-2px); }
+    .e-card:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+
+    .e-icon {
+      width:46px; height:46px; border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--primary-dim); border:1px solid rgba(0,212,204,0.18);
+      flex-shrink:0;
+    }
+    .e-icon.secondary { background:var(--secondary-dim); border-color:rgba(255,140,66,0.18); }
+
+    .e-title {
+      font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700;
+      color:var(--text); letter-spacing:-0.02em;
+    }
+    .e-desc { font-size:0.87rem; color:var(--text-muted); line-height:1.65; flex:1; }
+    .e-btn {
+      display:inline-flex; align-items:center; gap:7px;
+      align-self:flex-start;
+      padding:0.45rem 1.1rem;
+      border:1px solid rgba(0,212,204,0.28); border-radius:4px;
+      background:transparent; color:var(--primary);
+      font-family:'Space Mono',monospace; font-size:0.65rem;
+      letter-spacing:0.1em; text-transform:uppercase; cursor:pointer;
+      transition:background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    .e-btn:hover { background:var(--primary-dim); border-color:var(--primary); }
+    .e-btn:active { opacity:0.7; }
+    .e-btn.secondary { border-color:rgba(255,140,66,0.28); color:var(--secondary); }
+    .e-btn.secondary:hover { background:var(--secondary-dim); border-color:var(--secondary); }
+    .e-btn:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+
+    /* ── DOCUMENTAÇÃO ────────────────────────────────────────────── */
+    .doc-line {
+      position:relative; padding-left:2.25rem; margin-top:3rem;
+    }
+    .doc-line::before {
+      content:''; position:absolute; top:0; bottom:0; left:0; width:1px;
+      background:linear-gradient(to bottom, var(--primary), rgba(0,212,204,0.12) 70%, transparent);
+    }
+    .doc-entry { position:relative; padding-bottom:3rem; }
+    .doc-entry::before {
+      content:''; position:absolute; left:-2.25rem; top:6px;
+      width:10px; height:10px; border-radius:50%;
+      background:var(--primary); border:2px solid var(--bg-deep);
+      box-shadow:0 0 12px rgba(0,212,204,0.5);
+    }
+    .doc-tag {
+      display:inline-block; font-family:'Space Mono',monospace;
+      font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase;
+      padding:2px 9px; border-radius:20px;
+      background:rgba(0,212,204,0.07); color:var(--primary);
+      border:1px solid rgba(0,212,204,0.18); margin-bottom:0.6rem;
+    }
+    .doc-date {
+      font-family:'Space Mono',monospace; font-size:0.65rem;
+      letter-spacing:0.1em; color:var(--primary); margin-bottom:0.4rem;
+      text-transform:uppercase;
+    }
+    .doc-title {
+      font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:700;
+      color:var(--text); letter-spacing:-0.02em; margin-bottom:0.5rem;
+    }
+    .doc-body { font-size:0.9rem; color:var(--text-muted); line-height:1.78; }
+    .doc-more {
+      font-family:'Space Mono',monospace; font-size:0.68rem;
+      letter-spacing:0.1em; color:rgba(91,122,138,0.45);
+      display:flex; align-items:center; gap:12px; padding-top:0.5rem;
+    }
+    .doc-more::before { content:''; display:block; width:36px; height:1px; background:currentColor; }
+
+    /* ── MODAL ───────────────────────────────────────────────────── */
+    #modal-overlay {
+      position:fixed; inset:0; z-index:800;
+      background:rgba(2,6,14,0.92); backdrop-filter:blur(10px);
+      display:flex; align-items:center; justify-content:center; padding:2rem;
+      opacity:0; pointer-events:none;
+      transition:opacity 0.32s ease;
+    }
+    #modal-overlay.open { opacity:1; pointer-events:all; }
+    #modal-box {
+      background:var(--bg-elevated); border:1px solid var(--border);
+      border-radius:12px; width:100%; max-width:920px; max-height:88vh;
+      display:flex; flex-direction:column; overflow:hidden;
+      transform:scale(0.94);
+      transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);
+      box-shadow:0 28px 90px rgba(0,0,0,0.65), 0 0 0 1px rgba(0,212,204,0.08);
+    }
+    #modal-overlay.open #modal-box { transform:scale(1); }
+    #modal-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.2rem 1.75rem; border-bottom:1px solid var(--border); flex-shrink:0;
+    }
+    #modal-head-title {
+      font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700;
+      color:var(--text); letter-spacing:-0.02em;
+    }
+    #modal-close-btn {
+      width:30px; height:30px; border-radius:6px;
+      border:1px solid var(--border); background:transparent;
+      color:var(--text-muted); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    #modal-close-btn:hover { background:rgba(255,255,255,0.06); border-color:rgba(216,234,240,0.28); color:var(--text); }
+    #modal-close-btn:active { opacity:0.7; }
+    #modal-close-btn:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+    #modal-body { flex:1; overflow:auto; }
+    #modal-body iframe { width:100%; min-height:65vh; border:none; display:block; }
+    #modal-body img { width:100%; height:auto; display:block; object-fit:contain; padding:1rem; max-height:78vh; }
+
+    /* ── FOOTER ──────────────────────────────────────────────────── */
+    footer {
+      border-top:1px solid var(--border);
+      background:radial-gradient(ellipse 60% 80% at 50% 110%, rgba(0,212,204,0.025), transparent), var(--bg-deep);
+      padding:3rem 2.5rem;
+    }
+    .foot-inner {
+      max-width:1180px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1.5rem;
+    }
+    .foot-brand { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--text); letter-spacing:-0.02em; }
+    .foot-brand em { font-style:normal; color:var(--primary); }
+    .foot-copy { font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; color:rgba(91,122,138,0.45); }
+    .foot-links { display:flex; gap:2rem; list-style:none; }
+    .foot-links a {
+      font-family:'Space Mono',monospace; font-size:0.62rem;
+      letter-spacing:0.1em; text-transform:uppercase;
+      color:var(--text-muted); text-decoration:none;
+      transition:color 0.25s ease;
+    }
+    .foot-links a:hover { color:var(--primary); }
+    .foot-links a:focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+
+    /* ── EQUIPE ─────────────────────────────────────────────────────── */
+    .team-grid {
+      display:grid; grid-template-columns:repeat(5,1fr);
+      gap:1.25rem; margin-top:3rem;
+    }
+    .member-card {
+      background:var(--bg-surface); border:1px solid var(--border);
+      border-radius:12px; padding:1.5rem 1rem;
+      display:flex; flex-direction:column; align-items:center; gap:0.85rem;
+      text-align:center;
+      transition:border-color 0.3s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    }
+    .member-card:hover {
+      border-color:rgba(0,212,204,0.38); transform:translateY(-5px);
+      box-shadow:0 10px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,212,204,0.07);
+    }
+    .member-avatar {
+      width:72px; height:72px; border-radius:50%;
+      background:var(--primary-dim); border:1.5px solid rgba(0,212,204,0.35);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Space Mono',monospace; font-size:0.75rem;
+      font-weight:700; color:var(--primary); letter-spacing:0.05em;
+      flex-shrink:0; overflow:hidden;
+    }
+    .member-avatar img {
+      width:100%; height:100%; object-fit:cover; border-radius:50%;
+    }
+    .member-name {
+      font-family:'Syne',sans-serif; font-size:0.82rem; font-weight:700;
+      color:var(--text); letter-spacing:-0.01em; line-height:1.3;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
+    @media(max-width:900px){
+      .sobre-grid { grid-template-columns:1fr; gap:3rem; }
+      .cards-grid { grid-template-columns:1fr; }
+      .evo-grid { grid-template-columns:1fr 1fr; }
+      .hero-scope { display:none; }
+      .foot-inner { flex-direction:column; text-align:center; }
+      .foot-links { justify-content:center; }
+      .team-grid { grid-template-columns:repeat(3,1fr); }
+    }
+    @media(max-width:600px){
+      #nav { padding:0 1.25rem; }
+      .nav-links { gap:1.25rem; }
+      .section { padding:4.5rem 1.25rem; }
+      .evo-grid { grid-template-columns:1fr; }
+      .evo-grid::before { display:none; }
+      .team-grid { grid-template-columns:repeat(2,1fr); }
+    }
+
+    /* ── SCROLL PROGRESS ─────────────────────────────────────────────── */
+    #scroll-progress {
+      position:fixed; top:0; left:0; z-index:999;
+      height:2px; width:0%;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+      box-shadow:0 0 10px rgba(0,212,204,0.7);
+      transition:width 0.08s linear;
+      pointer-events:none;
+    }
+
+    /* ── CUSTOM CURSOR ───────────────────────────────────────────────── */
+    @media(pointer:fine){
+      body { cursor:none; }
+      a, button, [role="button"], .e-card, .member-card, .stat-card { cursor:none; }
+    }
+    .cursor-ring {
+      position:fixed; z-index:9998; pointer-events:none;
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid rgba(0,212,204,0.65);
+      transform:translate(-50%,-50%);
+      transition:width .28s ease, height .28s ease, border-color .28s ease, background .28s ease;
+      will-change:left,top;
+    }
+    .cursor-ring::before {
+      content:''; position:absolute;
+      top:50%; left:-7px; right:-7px; height:1px;
+      background:rgba(0,212,204,0.55); transform:translateY(-50%);
+    }
+    .cursor-ring::after {
+      content:''; position:absolute;
+      left:50%; top:-7px; bottom:-7px; width:1px;
+      background:rgba(0,212,204,0.55); transform:translateX(-50%);
+    }
+    .cursor-dot {
+      position:fixed; z-index:9999; pointer-events:none;
+      width:4px; height:4px; border-radius:50%;
+      background:var(--primary);
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 7px rgba(0,212,204,0.9);
+      will-change:left,top;
+    }
+    body.cursor-hover .cursor-ring {
+      width:52px; height:52px;
+      border-color:rgba(0,212,204,0.3);
+      background:rgba(0,212,204,0.04);
+    }
+    body.cursor-hidden .cursor-ring,
+    body.cursor-hidden .cursor-dot { opacity:0; }
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot"  id="cursor-dot"  aria-hidden="true"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+<nav id="nav" role="navigation" aria-label="Navegação principal">
+  <a href="#hero" class="nav-logo">
+    <!-- Telescope icon -->
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+      <line x1="5" y1="19" x2="13" y2="11"/>
+      <line x1="13" y1="11" x2="19" y2="5"/>
+      <line x1="9" y1="22" x2="5" y2="19"/>
+      <circle cx="5" cy="19" r="1.4" fill="currentColor" stroke="none"/>
+      <line x1="1.5" y1="17.5" x2="5" y2="19"/>
+      <line x1="3" y1="21" x2="5" y2="19"/>
+    </svg>
+    Projeto Telescópio
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#hero"          data-section="hero">Início</a></li>
+    <li><a href="#sobre"         data-section="sobre">Sobre</a></li>
+    <li><a href="#evolucao"      data-section="evolucao">Evolução</a></li>
+    <li><a href="#entregaveis"   data-section="entregaveis">Entregáveis</a></li>
+    <li><a href="#documentacao"  data-section="documentacao">Documentação</a></li>
+    <li><a href="#equipe"        data-section="equipe">Equipe</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────────────────────────── -->
+<section id="hero" aria-labelledby="hero-h1">
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-photo" aria-hidden="true"></div>
+  <div class="hero-nebula-bg" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" aria-hidden="true">Projeto MTP-2026 &nbsp;·&nbsp; 2026</div>
+    <h1 class="hero-title" id="hero-h1">Projeto<br>Telescópio</h1>
+    <p class="hero-sub">Construindo janelas para o universo</p>
+    <a href="#sobre" class="hero-cta">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M6.5 4V6.5M6.5 8.5V8.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      Explorar o Projeto
+    </a>
+  </div>
+
+  <!-- Decorative telescope SVG -->
+  <div class="hero-scope" aria-hidden="true">
+    <svg viewBox="0 0 280 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="140" y1="265" x2="55"  y2="380" stroke="#1a3a5a" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="140" y1="265" x2="225" y2="380" stroke="#1a3a5a" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="140" y1="265" x2="140" y2="378" stroke="#1a3a5a" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="85"  y1="330" x2="195" y2="330" stroke="#152e48" stroke-width="1.8" stroke-linecap="round"/>
+      <ellipse cx="140" cy="264" rx="20" ry="9" fill="#0a1f38"/>
+      <rect x="128" y="237" width="24" height="29" rx="3" fill="#0a1f38"/>
+      <rect x="122" y="220" width="36" height="19" rx="4" fill="#0f2a46"/>
+      <rect x="130" y="208" width="20" height="14" rx="3" fill="#0a2040"/>
+      <rect x="72"  y="132" width="136" height="48" rx="7" fill="#0a1f38" stroke="#183452" stroke-width="1.4"/>
+      <rect x="72"  y="132" width="136" height="6"  rx="3" fill="#183452" opacity="0.5"/>
+      <ellipse cx="72"  cy="156" rx="11" ry="24" fill="#080f22" stroke="#00d4cc" stroke-width="1.4"/>
+      <ellipse cx="72"  cy="156" rx="5.5" ry="14" fill="#040c1e" stroke="rgba(0,212,204,0.3)" stroke-width="0.5"/>
+      <ellipse cx="208" cy="156" rx="7.5" ry="16" fill="#080f22" stroke="#183452" stroke-width="1.2"/>
+      <rect x="92"  y="118" width="58" height="15" rx="3" fill="#080f22" stroke="#183452" stroke-width="1"/>
+      <ellipse cx="72" cy="156" rx="14" ry="27" fill="none" stroke="rgba(0,212,204,0.12)" stroke-width="3"/>
+      <!-- star sparkles -->
+      <circle cx="28"  cy="95"  r="1.4" fill="#00d4cc" opacity="0.9"/>
+      <circle cx="255" cy="75"  r="1"   fill="#ffffff"  opacity="0.55"/>
+      <circle cx="35"  cy="190" r="0.9" fill="#ffffff"  opacity="0.4"/>
+      <circle cx="248" cy="190" r="1.4" fill="#ff8c42"  opacity="0.45"/>
+      <circle cx="18"  cy="145" r="0.7" fill="#ffffff"  opacity="0.3"/>
+      <circle cx="265" cy="130" r="0.7" fill="#a8d8ea"  opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Rolar</span>
+  </div>
+</section>
+
+<!-- ── SOBRE ────────────────────────────────────────────────────────────── -->
+<div class="divider"></div>
+<section id="sobre" aria-labelledby="sobre-h2">
+  <div class="section">
+    <div class="sobre-grid">
+      <div class="reveal">
+        <div class="section-label">01 — Sobre</div>
+        <h2 class="section-title" id="sobre-h2">Sobre o<br>Projeto</h2>
+        <p class="section-desc">
+          O Projeto Telescópio é uma iniciativa escolar com objetivo de desenvolver um telescópio funcional do zero — desde o planejamento e seleção de materiais até a montagem, alinhamento óptico e calibração.
+        </p>
+        <p class="section-desc" style="margin-top:1rem;">
+          Unindo conceitos de óptica, engenharia e astronomia, o projeto documenta cada etapa construtiva com rigor técnico, servindo como base para pesquisa e apresentação acadêmica.
+        </p>
+      </div>
+      <div class="stats-stack">
+        <div class="stat-card reveal reveal-d1">
+          <div class="stat-number">02</div>
+          <div class="stat-label">Fase Atual — Adquirindo Peças</div>
+        </div>
+        <div class="stat-card reveal reveal-d2">
+          <div class="stat-number">04</div>
+          <div class="stat-label">Entregáveis Produzidos</div>
+        </div>
+        <div class="stat-card reveal reveal-d3">
+          <div class="stat-number" style="color:var(--secondary)">∞</div>
+          <div class="stat-label">Estrelas a Observar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EVOLUÇÃO ─────────────────────────────────────────────────────────── -->
+<div class="divider"></div>
+<div id="evolucao-bg">
+  <div class="section" id="evolucao" aria-labelledby="evo-h2">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label" style="justify-content:center">02 — Progresso</div>
+      <h2 class="section-title" id="evo-h2" style="text-align:center">Evolução do<br>Telescópio</h2>
+      <p class="section-desc" style="margin:0 auto;text-align:center">
+        Acompanhe cada fase da construção. Conforme o projeto avança, o telescópio ganha vida.
+      </p>
+    </div>
+
+    <div class="evo-grid reveal">
+
+      <!-- Phase 1 — Active -->
+      <div class="phase active">
+        <div class="phase-dot">
+          <!-- Blueprint telescope SVG -->
+          <svg viewBox="0 0 40 40" width="26" height="26" fill="none">
+            <rect x="6" y="17" width="28" height="8" rx="2" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="6"  y1="21" x2="4"  y2="21" stroke="#00d4cc" stroke-width="1.3"/>
+            <ellipse cx="3.5" cy="21" rx="2.5" ry="5" stroke="#00d4cc" stroke-width="1.1" stroke-dasharray="2,1.5"/>
+            <line x1="34" y1="21" x2="37" y2="21" stroke="#00d4cc" stroke-width="1" stroke-dasharray="2,1.5"/>
+            <line x1="20" y1="25" x2="20" y2="30" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="13" y1="30" x2="27" y2="30" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="13" y1="30" x2="10" y2="37" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="27" y1="30" x2="30" y2="37" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="2"  y1="13" x2="38" y2="13" stroke="rgba(0,212,204,0.18)" stroke-width="0.5"/>
+            <line x1="20" y1="3"  x2="20" y2="37" stroke="rgba(0,212,204,0.1)"  stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="phase-num">Fase 01</div>
+        <div class="phase-name">Planejamento</div>
+        <div class="phase-desc">Parâmetros ópticos, seleção de materiais e fluxo de construção</div>
+        <div class="phase-badge">Em andamento</div>
+      </div>
+
+      <!-- Phase 2 — Active -->
+      <div class="phase active">
+        <div class="phase-dot">
+          <svg viewBox="0 0 40 40" width="26" height="26" fill="none">
+            <rect x="10" y="22" width="20" height="12" rx="2" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <polyline points="10,22 20,16 30,22" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="3,1.8"/>
+            <line x1="20" y1="16" x2="20" y2="22" stroke="#00d4cc" stroke-width="1.3" stroke-dasharray="2,1.5"/>
+            <line x1="14" y1="26" x2="26" y2="26" stroke="#00d4cc" stroke-width="0.9" stroke-dasharray="2,1.5"/>
+            <circle cx="30" cy="13" r="4.5" stroke="#00d4cc" stroke-width="1.1" stroke-dasharray="2,1.5"/>
+            <line x1="30" y1="10" x2="30" y2="16" stroke="rgba(0,212,204,0.35)" stroke-width="0.7"/>
+            <line x1="27" y1="13" x2="33" y2="13" stroke="rgba(0,212,204,0.35)" stroke-width="0.7"/>
+          </svg>
+        </div>
+        <div class="phase-num">Fase 02</div>
+        <div class="phase-name">Aquisição de Peças</div>
+        <div class="phase-desc">Compra de lentes, espelhos, tubos e ferragens</div>
+        <div class="phase-badge">Em andamento</div>
+      </div>
+
+      <!-- Phase 3 — Locked -->
+      <div class="phase locked">
+        <div class="phase-dot">
+          <svg viewBox="0 0 40 40" width="22" height="22" fill="none">
+            <rect x="10" y="19" width="20" height="15" rx="2.5" stroke="#5b7a8a" stroke-width="1.3"/>
+            <path d="M14 19v-5a6 6 0 1 1 12 0v5" stroke="#5b7a8a" stroke-width="1.3"/>
+            <circle cx="20" cy="27" r="2" fill="#5b7a8a"/>
+          </svg>
+        </div>
+        <div class="phase-num">Fase 03</div>
+        <div class="phase-name">Montagem</div>
+        <div class="phase-desc">Construção da estrutura, colagem óptica e alinhamento</div>
+        <div class="phase-badge">Bloqueado</div>
+      </div>
+
+      <!-- Phase 4 — Locked -->
+      <div class="phase locked">
+        <div class="phase-dot">
+          <svg viewBox="0 0 40 40" width="22" height="22" fill="none">
+            <rect x="10" y="19" width="20" height="15" rx="2.5" stroke="#5b7a8a" stroke-width="1.3"/>
+            <path d="M14 19v-5a6 6 0 1 1 12 0v5" stroke="#5b7a8a" stroke-width="1.3"/>
+            <circle cx="20" cy="27" r="2" fill="#5b7a8a"/>
+          </svg>
+        </div>
+        <div class="phase-num">Fase 04</div>
+        <div class="phase-name">Telescópio Funcional</div>
+        <div class="phase-desc">Calibração final, testes ópticos e primeira observação</div>
+        <div class="phase-badge">Bloqueado</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── ENTREGÁVEIS ──────────────────────────────────────────────────────── -->
+<div class="divider"></div>
+<section id="entregaveis" aria-labelledby="ent-h2">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">03 — Trabalhos</div>
+      <h2 class="section-title" id="ent-h2">Entregáveis<br>do Projeto</h2>
+      <p class="section-desc">
+        Documentos produzidos ao longo do desenvolvimento. Clique em qualquer card para visualizar.
+      </p>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Carta Morfológica -->
+      <div class="e-card reveal"
+           role="button" tabindex="0" aria-label="Abrir: Carta Morfológica"
+           data-title="Carta Morfológica"
+           data-type="pdf"
+           data-src="trabalhos/MTP- Carta morfológica.pdf"
+           onclick="openModal(this)"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(this)}">
+        <div class="e-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#00d4cc" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2.5"/>
+            <line x1="7" y1="8"  x2="17" y2="8"/>
+            <line x1="7" y1="12" x2="17" y2="12"/>
+            <line x1="7" y1="16" x2="12" y2="16"/>
+          </svg>
+        </div>
+        <div class="e-title">Carta Morfológica</div>
+        <p class="e-desc">Mapeamento das soluções construtivas e combinações possíveis para cada subsistema do telescópio.</p>
+        <button class="e-btn" tabindex="-1" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+            <path d="M1.5 7.5L7.5 1.5M7.5 1.5H3.5M7.5 1.5V5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Visualizar
+        </button>
+      </div>
+
+      <!-- Fluxograma -->
+      <div class="e-card reveal reveal-d1"
+           role="button" tabindex="0" aria-label="Abrir: Fluxograma de Montagem"
+           data-title="Fluxograma de Montagem"
+           data-type="image"
+           data-src="trabalhos/Telescope Construction-2026-04-15-033012.png"
+           onclick="openModal(this)"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(this)}">
+        <div class="e-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#00d4cc" stroke-width="1.5" aria-hidden="true">
+            <rect x="1" y="3"  width="7" height="4" rx="1"/>
+            <rect x="8.5" y="10" width="7" height="4" rx="1"/>
+            <rect x="16" y="17" width="7" height="4" rx="1"/>
+            <polyline points="4.5,7 4.5,10.5 12,10.5" stroke="#00d4cc" stroke-width="1"/>
+            <polyline points="12,14 12,17.5 16,17.5" stroke="#00d4cc" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="e-title">Fluxograma de Montagem</div>
+        <p class="e-desc">Diagrama com todos os processos sequenciais de construção — do início ao telescópio pronto para apresentação.</p>
+        <button class="e-btn" tabindex="-1" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+            <path d="M1.5 7.5L7.5 1.5M7.5 1.5H3.5M7.5 1.5V5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Visualizar
+        </button>
+      </div>
+
+      <!-- Personas -->
+      <div class="e-card reveal reveal-d2"
+           role="button" tabindex="0" aria-label="Abrir: Personas do Projeto"
+           data-title="Personas do Projeto"
+           data-type="pdf"
+           data-src="trabalhos/Slides Personas (1).pdf"
+           onclick="openModal(this)"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(this)}">
+        <div class="e-icon">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#00d4cc" stroke-width="1.5" aria-hidden="true">
+            <circle cx="9"  cy="7" r="3"/>
+            <circle cx="15" cy="7" r="3"/>
+            <path d="M3 19c0-3.3 2.7-6 6-6h2"/>
+            <path d="M13 13h2c3.3 0 6 2.7 6 6"/>
+          </svg>
+        </div>
+        <div class="e-title">Personas do Projeto</div>
+        <p class="e-desc">Perfis detalhados dos usuários que poderão utilizar o telescópio — objetivos, contextos e necessidades identificadas.</p>
+        <button class="e-btn" tabindex="-1" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+            <path d="M1.5 7.5L7.5 1.5M7.5 1.5H3.5M7.5 1.5V5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Visualizar
+        </button>
+      </div>
+
+      <!-- Objetivos -->
+      <div class="e-card reveal reveal-d3"
+           role="button" tabindex="0" aria-label="Abrir: Objetivos do Projeto"
+           data-title="Objetivos do Projeto"
+           data-type="pdf"
+           data-src="trabalhos/Objetivos.pdf"
+           onclick="openModal(this)"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(this)}">
+        <div class="e-icon secondary">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#ff8c42" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="12" cy="12" r="1" fill="#ff8c42"/>
+            <line x1="12" y1="3"  x2="12" y2="5"/>
+            <line x1="12" y1="19" x2="12" y2="21"/>
+            <line x1="3"  y1="12" x2="5"  y2="12"/>
+            <line x1="19" y1="12" x2="21" y2="12"/>
+          </svg>
+        </div>
+        <div class="e-title">Objetivos do Projeto</div>
+        <p class="e-desc">Metas e diretrizes estabelecidas para o desenvolvimento do telescópio, com critérios de sucesso e escopo técnico definido.</p>
+        <button class="e-btn secondary" tabindex="-1" aria-hidden="true">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+            <path d="M1.5 7.5L7.5 1.5M7.5 1.5H3.5M7.5 1.5V5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Visualizar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── DOCUMENTAÇÃO ─────────────────────────────────────────────────────── -->
+<div class="divider"></div>
+<section id="documentacao" aria-labelledby="doc-h2">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">04 — Registro</div>
+      <h2 class="section-title" id="doc-h2">Documentação<br>do Projeto</h2>
+      <p class="section-desc">Registro cronológico das etapas, decisões e marcos ao longo do desenvolvimento.</p>
+    </div>
+
+    <div class="doc-line reveal">
+
+      <div class="doc-entry">
+        <div class="doc-tag">Início</div>
+        <div class="doc-title">Projeto Iniciado</div>
+        <div class="doc-body">
+          Início oficial do Projeto Telescópio. Foram definidos os parâmetros básicos do instrumento, o escopo de trabalho e os primeiros entregáveis: carta morfológica, fluxograma de montagem, mapa de personas e documento de objetivos. A fase de planejamento está em pleno andamento.
+        </div>
+      </div>
+
+      <div class="doc-entry">
+        <div class="doc-tag">Entregável</div>
+        <div class="doc-title">Fluxograma de Construção Concluído</div>
+        <div class="doc-body">
+          O fluxograma completo com todos os processos de montagem foi finalizado — desde a definição do diâmetro do espelho primário até a apresentação do telescópio funcional. O documento mapeia decisões críticas, pontos de verificação e ramificações do processo construtivo.
+        </div>
+      </div>
+
+      <div class="doc-entry">
+        <div class="doc-tag">Entregável</div>
+        <div class="doc-title">Carta Morfológica e Personas Finalizadas</div>
+        <div class="doc-body">
+          Concluídas a carta morfológica — com combinações de soluções para os subsistemas do telescópio — e a análise de personas, que identifica os diferentes perfis de usuários que poderão utilizar o instrumento após sua conclusão.
+        </div>
+      </div>
+
+      <p class="doc-more" aria-hidden="true">Mais atualizações em breve</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EQUIPE ────────────────────────────────────────────────────────────── -->
+<div class="divider"></div>
+<section id="equipe" aria-labelledby="equipe-h2">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">05 — Membros</div>
+      <h2 class="section-title" id="equipe-h2">Equipe do<br>Projeto</h2>
+      <p class="section-desc">Os integrantes responsáveis pelo desenvolvimento do Projeto Telescópio.</p>
+    </div>
+
+    <div class="team-grid">
+
+      <div class="member-card reveal">
+        <div class="member-avatar"><img src="Acesso/foto_rogerio.png" alt="Rogério De Lima Faria"></div>
+        <div class="member-name">Rogério De Lima Faria</div>
+      </div>
+
+      <div class="member-card reveal reveal-d1">
+        <div class="member-avatar"><img src="Acesso/WhatsApp Image 2026-05-21 at 19.31.00.jpeg" alt="Arthur Tomé"></div>
+        <div class="member-name">Arthur Tomé</div>
+      </div>
+
+      <div class="member-card reveal reveal-d2">
+        <div class="member-avatar"><img src="Acesso/foto_augusto.png" alt="Augusto Castilione"></div>
+        <div class="member-name">Augusto Castilione</div>
+      </div>
+
+      <div class="member-card reveal reveal-d3">
+        <div class="member-avatar"><img src="Acesso/foto_ewerton.png" alt="Ewerton Gomes"></div>
+        <div class="member-name">Ewerton Gomes</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar"><img src="Acesso/foto_jean.png" alt="Jean Grossi"></div>
+        <div class="member-name">Jean Grossi</div>
+      </div>
+
+      <div class="member-card reveal reveal-d1">
+        <div class="member-avatar"><img src="Acesso/foto_gabriel.png" alt="Gabriel Kaiuca"></div>
+        <div class="member-name">Gabriel Kaiuca</div>
+      </div>
+
+      <div class="member-card reveal reveal-d2">
+        <div class="member-avatar">JP</div>
+        <div class="member-name">João Paris</div>
+      </div>
+
+      <div class="member-card reveal reveal-d3">
+        <div class="member-avatar">LO</div>
+        <div class="member-name">Lucas Oshiro</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar"><img src="Acesso/foto_renné.png" alt="Renné Bonson"></div>
+        <div class="member-name">Renné Bonson</div>
+      </div>
+
+      <div class="member-card reveal reveal-d1">
+        <div class="member-avatar">VP</div>
+        <div class="member-name">Vinicius Pisca</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-brand">Projeto <em>Telescópio</em></div>
+      <p class="foot-copy" style="margin-top:0.4rem">Projeto MTP-2026</p>
+    </div>
+    <ul class="foot-links" role="list">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#evolucao">Evolução</a></li>
+      <li><a href="#entregaveis">Entregáveis</a></li>
+      <li><a href="#documentacao">Documentação</a></li>
+    </ul>
+    <p class="foot-copy">Construindo janelas para o universo</p>
+  </div>
+</footer>
+
+<!-- ── MODAL ────────────────────────────────────────────────────────────── -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-head-title"
+     onclick="if(event.target===this)closeModal()">
+  <div id="modal-box">
+    <div id="modal-head">
+      <span id="modal-head-title">Entregável</span>
+      <button id="modal-close-btn" onclick="closeModal()" aria-label="Fechar modal">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ──────────────────────────────────────────────────────────── -->
+<script>
+// ─── Star field canvas ───────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [], W, H;
+
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    buildStars();
+  }
+
+  function buildStars(){
+    stars = [];
+    const n = Math.min(Math.floor(W * H / 2800), 600);
+    for(let i=0; i<n; i++){
+      const r = Math.random();
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        radius: r < 0.68 ? 0.4 : r < 0.88 ? 0.9 : 1.5,
+        baseOp: 0.12 + Math.random() * 0.7,
+        spd: 0.4 + Math.random() * 1.6,
+        off: Math.random() * Math.PI * 2,
+        col: r > 0.93 ? '#00d4cc' : r > 0.86 ? '#a8d8ea' : '#ffffff'
+      });
+    }
+  }
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.015;
+    stars.forEach(s => {
+      const op = s.baseOp * (0.45 + 0.55 * Math.sin(t * s.spd + s.off));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI*2);
+      ctx.fillStyle = s.col;
+      ctx.globalAlpha = op;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+// ─── Scroll reveal ───────────────────────────────────────────────────────────
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// ─── Active nav highlight ────────────────────────────────────────────────────
+(function(){
+  const ids = ['hero','sobre','evolucao','entregaveis','documentacao','equipe'];
+  const links = Object.fromEntries(ids.map(id => [id, document.querySelector(`.nav-links a[data-section="${id}"]`)]));
+  const targets = ids.map(id => document.getElementById(id)).filter(Boolean);
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        ids.forEach(id => links[id] && links[id].classList.remove('active'));
+        if(links[e.target.id]) links[e.target.id].classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  targets.forEach(t => obs.observe(t));
+})();
+
+// ─── Modal ───────────────────────────────────────────────────────────────────
+function openModal(card){
+  const overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-head-title').textContent = card.dataset.title;
+  const body = document.getElementById('modal-body');
+  body.innerHTML = '';
+  if(card.dataset.type === 'pdf'){
+    const f = document.createElement('iframe');
+    f.src = card.dataset.src;
+    f.title = card.dataset.title;
+    body.appendChild(f);
+  } else {
+    const img = document.createElement('img');
+    img.src = card.dataset.src;
+    img.alt = card.dataset.title;
+    body.appendChild(img);
+  }
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal-close-btn').focus();
+}
+
+function closeModal(){
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { document.getElementById('modal-body').innerHTML = ''; }, 380);
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+// ─── Scroll progress bar ─────────────────────────────────────────────────────
+(function(){
+  const bar = document.getElementById('scroll-progress');
+  function update(){
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', update, { passive:true });
+  update();
+})();
+
+// ─── Custom cursor ───────────────────────────────────────────────────────────
+(function(){
+  if(!matchMedia('(pointer:fine)').matches) return;
+  const ring = document.getElementById('cursor-ring');
+  const dot  = document.getElementById('cursor-dot');
+  let mx=0, my=0, rx=window.innerWidth/2, ry=window.innerHeight/2;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+
+  document.addEventListener('mouseleave', () => document.body.classList.add('cursor-hidden'));
+  document.addEventListener('mouseenter', () => document.body.classList.remove('cursor-hidden'));
+
+  const hoverTargets = 'a, button, [role="button"], .e-card, .member-card, .stat-card, .nav-logo';
+  document.querySelectorAll(hoverTargets).forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  (function animRing(){
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+})();
+
+// ─── 3D Tilt on cards ────────────────────────────────────────────────────────
+(function(){
+  function tilt(selector, strength){
+    document.querySelectorAll(selector).forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width  - 0.5) * strength;
+        const y = ((e.clientY - r.top)  / r.height - 0.5) * strength;
+        card.style.transition = 'transform 0.08s ease, border-color 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform = `perspective(700px) rotateY(${x}deg) rotateX(${-y}deg) translateY(-5px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform = '';
+      });
+    });
+  }
+  tilt('.e-card',     10);
+  tilt('.member-card', 12);
+  tilt('.stat-card',   8);
+})();
+
+// ─── Animated counters ───────────────────────────────────────────────────────
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el  = entry.target;
+      const raw = el.textContent.trim();
+      if(raw === '∞'){ obs.unobserve(el); return; }
+      const target = parseInt(raw, 10);
+      if(isNaN(target)){ obs.unobserve(el); return; }
+      obs.unobserve(el);
+      let start = null;
+      const dur = 1500;
+      (function step(ts){
+        if(!start) start = ts;
+        const p = Math.min((ts - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = String(Math.round(ease * target)).padStart(2, '0');
+        if(p < 1) requestAnimationFrame(step);
+      })(performance.now());
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.stat-number').forEach(el => obs.observe(el));
+})();
+
+// ─── Hero mouse parallax ─────────────────────────────────────────────────────
+(function(){
+  const hero    = document.getElementById('hero');
+  const nebula  = document.querySelector('.hero-nebula-bg');
+  const content = document.querySelector('.hero-content');
+  const scope   = document.querySelector('.hero-scope');
+  if(!hero) return;
+
+  hero.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth  - 0.5);
+    const y = (e.clientY / window.innerHeight - 0.5);
+    if(nebula)  nebula.style.transform  = `translate(${x*28}px, ${y*18}px)`;
+    if(content) content.style.transform = `translate(${x*-10}px, ${y*-7}px)`;
+    if(scope)   scope.style.transform   = `translateY(${Math.sin(Date.now()/900)*14}px) translate(${x*14}px, ${y*9}px)`;
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    if(nebula)  nebula.style.transform  = '';
+    if(content) content.style.transform = '';
+    if(scope)   scope.style.transform   = '';
+  });
+})();
+</script>
+</body>
+</html>
