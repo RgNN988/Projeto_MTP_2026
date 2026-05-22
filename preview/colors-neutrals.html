@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 22px 26px; display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; gap: 12px; }
+  .sw {
+    flex: 1; min-height: 76px; border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .sw .name {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .sw .hex {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.1em; opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <div class="sw" style="background:#d8eaf0; border-color:rgba(0,0,0,0.2)"><span class="name" style="color:#030a14">text</span><span class="hex" style="color:#030a14">#D8EAF0</span></div>
+      <div class="sw" style="background:#5b7a8a"><span class="name" style="color:#030a14">text-muted</span><span class="hex" style="color:#030a14">#5B7A8A</span></div>
+      <div class="sw" style="background:rgba(91,122,138,0.45)"><span class="name" style="color:var(--text)">text-faint</span><span class="hex" style="color:var(--text)">45% α slate</span></div>
+    </div>
+    <div class="row">
+      <div class="sw" style="background:var(--bg-surface); border-color:rgba(0,212,204,0.14)"><span class="name" style="color:var(--text)">border (default)</span><span class="hex" style="color:var(--text-muted)">teal · 14% α</span></div>
+      <div class="sw" style="background:var(--bg-surface); border-color:rgba(0,212,204,0.38)"><span class="name" style="color:var(--text)">border-strong</span><span class="hex" style="color:var(--text-muted)">teal · 38% α</span></div>
+      <div class="sw" style="background:var(--bg-surface); border-color:rgba(91,122,138,0.18)"><span class="name" style="color:var(--text)">border-locked</span><span class="hex" style="color:var(--text-muted)">slate · 18% α</span></div>
+    </div>
+  </div>
+</body>
+</html>

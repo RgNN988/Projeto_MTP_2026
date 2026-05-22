@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 22px 26px; }
+  .row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 6px 0;
+  }
+  .tag {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    width: 50px; flex-shrink: 0;
+  }
+  .px {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.1em; color: var(--primary);
+    width: 44px; flex-shrink: 0;
+  }
+  .bar {
+    height: 14px; background: var(--primary-dim);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row"><span class="tag">sp-1</span><span class="px">4</span><div class="bar" style="width:4px;"></div></div>
+    <div class="row"><span class="tag">sp-2</span><span class="px">8</span><div class="bar" style="width:8px;"></div></div>
+    <div class="row"><span class="tag">sp-4</span><span class="px">16</span><div class="bar" style="width:16px;"></div></div>
+    <div class="row"><span class="tag">sp-6</span><span class="px">24</span><div class="bar" style="width:24px;"></div></div>
+    <div class="row"><span class="tag">sp-8</span><span class="px">32</span><div class="bar" style="width:32px;"></div></div>
+    <div class="row"><span class="tag">sp-12</span><span class="px">48</span><div class="bar" style="width:48px;"></div></div>
+    <div class="row"><span class="tag">sp-16</span><span class="px">64</span><div class="bar" style="width:64px;"></div></div>
+    <div class="row"><span class="tag">section</span><span class="px">112</span><div class="bar" style="width:112px;"></div></div>
+  </div>
+</body>
+</html>

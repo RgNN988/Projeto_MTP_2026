@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 24px 28px; display:flex; flex-direction:column; gap:14px; }
+  .row { display:flex; gap:18px; align-items: baseline; }
+  .meta {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    min-width: 110px; flex-shrink: 0;
+  }
+  .body {
+    font-family: var(--font-body); color: var(--text);
+    line-height: 1.75;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <span class="meta">Outfit · 500</span>
+      <span class="body" style="font-size: 18px; font-weight: 500;">Construindo janelas para o universo</span>
+    </div>
+    <div class="row">
+      <span class="meta">Outfit · 300</span>
+      <span class="body" style="font-size: 16px; font-weight: 300; color: var(--text-muted); max-width: 460px;">Mapeamento das soluções construtivas e combinações possíveis para cada subsistema do telescópio.</span>
+    </div>
+    <div class="row">
+      <span class="meta">Outfit · 400</span>
+      <span class="body" style="font-size: 14px; font-weight: 400; color: var(--text-muted);">Compra de lentes, espelhos, tubos e ferragens.</span>
+    </div>
+  </div>
+</body>
+</html>

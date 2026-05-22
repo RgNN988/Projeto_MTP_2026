@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); overflow: hidden; }
+  .wrap {
+    position: relative; min-height: 220px;
+    background:
+      radial-gradient(ellipse 60% 70% at 40% 35%, rgba(0,55,75,0.5) 0%, transparent 65%),
+      var(--bg-deep);
+  }
+  .demo {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; align-items: center; justify-content: center; gap: 48px;
+  }
+  .cursor {
+    position: relative; width: 40px; height: 40px;
+  }
+  .ring {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(0,212,204,0.65);
+  }
+  .ring::before {
+    content:''; position: absolute; top: 50%; left: -7px; right: -7px; height: 1px;
+    background: rgba(0,212,204,0.55); transform: translateY(-50%);
+  }
+  .ring::after {
+    content:''; position: absolute; left: 50%; top: -7px; bottom: -7px; width: 1px;
+    background: rgba(0,212,204,0.55); transform: translateX(-50%);
+  }
+  .dot {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 7px rgba(0,212,204,0.9);
+  }
+  .cursor.hover .ring {
+    width: 52px; height: 52px;
+    border-color: rgba(0,212,204,0.3);
+    background: rgba(0,212,204,0.04);
+  }
+  .cap {
+    position: absolute; top: 56px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .meta {
+    position: absolute; bottom: 14px; left: 16px;
+    font-family: var(--font-mono); font-size: 8.5px;
+    letter-spacing: 0.14em; color: var(--text-muted);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="demo">
+      <div class="cursor">
+        <div class="ring"></div>
+        <div class="dot"></div>
+        <div class="cap">idle · 36×36</div>
+      </div>
+      <div class="cursor hover">
+        <div class="ring"></div>
+        <div class="dot"></div>
+        <div class="cap">hover · 52×52</div>
+      </div>
+    </div>
+    <span class="meta">Custom cursor · pointer:fine only · replaces OS cursor</span>
+  </div>
+</body>
+</html>

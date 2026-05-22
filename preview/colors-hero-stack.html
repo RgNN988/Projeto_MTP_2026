@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap {
+    padding: 28px 32px;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 30%, rgba(0,55,75,0.5) 0%, transparent 65%),
+      radial-gradient(ellipse 35% 30% at 85% 25%, rgba(255,140,66,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 35% at 15% 80%, rgba(0,212,204,0.06) 0%, transparent 55%),
+      var(--bg-deep);
+    min-height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .label {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .label::before, .label::after {
+    content:''; display:block; width:24px; height:1px; background: currentColor; opacity:0.45;
+  }
+  .demo {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 44px; letter-spacing: -0.04em; line-height: 1;
+    background: linear-gradient(145deg, #ffffff 0%, #d8eaf0 35%, var(--primary) 72%, rgba(0,212,204,0.55) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0.1em 0.1em;
+  }
+  .caption {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; color: var(--text-muted);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="label">Hero background · 4 radial gradients</span>
+    <div class="demo">Janelas para o universo</div>
+    <span class="caption">stacked radials + linear · text uses gradient clip</span>
+  </div>
+</body>
+</html>

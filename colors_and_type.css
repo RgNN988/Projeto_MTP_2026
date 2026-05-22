@@ -1,0 +1,213 @@
+/* =============================================================
+   Telescópio Design System — Core Tokens
+   Project MTP-2026 · "Construindo janelas para o universo"
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  /* ───── COLOR — Surfaces (deep space stack) ───── */
+  --bg-deep:      #030a14;  /* page background — empty space */
+  --bg-surface:   #0b1524;  /* cards, side panels */
+  --bg-elevated:  #111f35;  /* modals, popovers */
+
+  /* ───── COLOR — Brand ───── */
+  --primary:        #00d4cc;  /* teal — the telescope lens glow */
+  --primary-dim:    rgba(0, 212, 204, 0.10);
+  --primary-glow:   rgba(0, 212, 204, 0.35);
+  --primary-line:   rgba(0, 212, 204, 0.55);
+
+  --secondary:      #ff8c42;  /* warm orange — stars / accents */
+  --secondary-dim:  rgba(255, 140, 66, 0.10);
+  --secondary-line: rgba(255, 140, 66, 0.38);
+
+  /* ───── COLOR — Text ───── */
+  --text:        #d8eaf0;  /* primary copy */
+  --text-muted:  #5b7a8a;  /* secondary copy, labels */
+  --text-faint:  rgba(91, 122, 138, 0.45);
+
+  /* ───── COLOR — Borders ───── */
+  --border:        rgba(0, 212, 204, 0.14);
+  --border-strong: rgba(0, 212, 204, 0.38);
+  --border-locked: rgba(91, 122, 138, 0.18);
+
+  /* ───── COLOR — Status ───── */
+  --status-active:    var(--primary);
+  --status-locked:    var(--text-muted);
+  --status-warning:   var(--secondary);
+
+  /* ───── TYPOGRAPHY — Families ───── */
+  --font-display: 'Syne', sans-serif;        /* big titles, brand */
+  --font-body:    'Outfit', sans-serif;      /* paragraphs, UI */
+  --font-mono:    'Space Mono', monospace;   /* labels, eyebrows, metadata */
+
+  /* ───── TYPOGRAPHY — Sizes (responsive clamp) ───── */
+  --t-display:  clamp(2rem, 9vw, 5rem);      /* hero */
+  --t-h1:       clamp(2.1rem, 5vw, 3.6rem);  /* section title */
+  --t-h2:       1.5rem;
+  --t-h3:       1.15rem;
+  --t-h4:       1rem;
+  --t-body:     1rem;
+  --t-body-sm:  0.9rem;
+  --t-meta:     0.82rem;
+  --t-label:    0.68rem;   /* eyebrow / mono caps */
+  --t-micro:    0.6rem;
+
+  /* ───── TYPOGRAPHY — Weights ───── */
+  --w-light:   300;
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-bold:    700;
+  --w-black:   800;
+
+  /* ───── TYPOGRAPHY — Tracking ───── */
+  --track-tight:  -0.04em;
+  --track-snug:   -0.02em;
+  --track-normal:  0;
+  --track-eyebrow: 0.2em;
+  --track-mono:    0.12em;
+
+  /* ───── SPACING (4-base) ───── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-section: 7rem;   /* default vertical padding for section blocks */
+
+  /* ───── RADII ───── */
+  --r-sm: 4px;     /* buttons, badges, inline tags */
+  --r-md: 8px;     /* stat cards, small panels */
+  --r-lg: 12px;    /* entregável cards, modals */
+  --r-pill: 999px;
+  --r-circle: 50%;
+
+  /* ───── ELEVATION (shadows are subtle; glow does the work) ───── */
+  --sh-card:    0 2px 24px rgba(0, 0, 0, 0.28);
+  --sh-card-hi: 0 14px 56px rgba(0, 0, 0, 0.40), 0 0 28px rgba(0, 212, 204, 0.055);
+  --sh-modal:   0 28px 90px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 212, 204, 0.08);
+  --glow-primary: 0 0 28px rgba(0, 212, 204, 0.22);
+  --glow-cursor:  0 0 7px rgba(0, 212, 204, 0.9);
+
+  /* ───── MOTION ───── */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);    /* signature easing */
+  --ease-fast:   cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast:   0.2s;
+  --t-base:   0.3s;
+  --t-slow:   0.75s;
+  --t-spin:   140s;   /* nebula */
+  --t-float:  7s;     /* telescope hover */
+  --t-pulse:  3.2s;   /* phase dot */
+
+  /* ───── LAYOUT ───── */
+  --max-w:      1180px;
+  --nav-h:      64px;
+  --content-pad: 2.5rem;
+}
+
+/* =============================================================
+   SEMANTIC ELEMENT STYLES
+   ============================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Headings — display family, tight tracking, light line-height ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: var(--track-tight);
+  line-height: 1.1;
+  color: var(--text);
+}
+h1 { font-size: var(--t-display); font-weight: var(--w-black); }
+h2 { font-size: var(--t-h1);      font-weight: var(--w-black); letter-spacing: -0.03em; }
+h3 { font-size: var(--t-h3);      font-weight: var(--w-bold);  letter-spacing: var(--track-snug); }
+h4 { font-size: var(--t-h4);      font-weight: var(--w-bold);  letter-spacing: var(--track-snug); }
+
+/* ── Body copy ── */
+p {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: var(--t-body);
+  color: var(--text-muted);
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+/* ── Mono — used as label/eyebrow ── */
+.mono, code, kbd {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+}
+
+/* ── Eyebrow — a section label like "01 — Sobre" ── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* ── Gradient hero title treatment ── */
+.title-gradient {
+  background: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #d8eaf0 35%,
+    var(--primary) 72%,
+    rgba(0, 212, 204, 0.55) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Links ── */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--t-base) var(--ease-out);
+}
+a:hover { color: #fff; }
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Hairline divider ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}

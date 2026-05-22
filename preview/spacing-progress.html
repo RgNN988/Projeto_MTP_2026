@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap {
+    padding: 24px 28px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .meta {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .meta strong { color: var(--primary); font-weight: 700; }
+  .progress {
+    height: 2px; width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 10px rgba(0,212,204,0.7);
+    border-radius: 1px;
+  }
+  .frame {
+    position: relative; height: 80px; border: 1px solid var(--border);
+    border-radius: 6px; background: var(--bg-surface);
+    overflow: hidden;
+  }
+  .frame .bar {
+    position: absolute; top: 0; left: 0; height: 2px; width: 62%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    box-shadow: 0 0 10px rgba(0,212,204,0.7);
+  }
+  .frame .lbl {
+    position: absolute; left: 14px; top: 14px;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .frame .pct {
+    position: absolute; right: 14px; top: 14px;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; color: var(--primary);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="meta"><strong>SCROLL PROGRESS</strong> · 2px · primary → secondary gradient · teal glow</span>
+    <div class="frame">
+      <div class="bar"></div>
+      <span class="lbl">viewport</span>
+      <span class="pct">62%</span>
+    </div>
+  </div>
+</body>
+</html>

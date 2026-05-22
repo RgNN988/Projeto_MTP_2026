@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 24px 28px; display:flex; flex-direction:column; gap:14px; }
+  .row { display:flex; gap:18px; align-items:center; }
+  .meta {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    min-width: 110px; flex-shrink:0;
+  }
+  .mono {
+    font-family: var(--font-mono); text-transform: uppercase;
+    color: var(--primary);
+  }
+  .eyebrow {
+    display:inline-flex; align-items:center; gap:14px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--primary);
+  }
+  .eyebrow::before, .eyebrow::after {
+    content:''; display:block; width:30px; height:1px; background: currentColor; opacity:0.45;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <span class="meta">Mono · 700</span>
+      <span class="mono" style="font-size: 12px; letter-spacing: 0.14em; font-weight: 700;">EXPLORAR O PROJETO</span>
+    </div>
+    <div class="row">
+      <span class="meta">Mono · 400</span>
+      <span class="mono" style="font-size: 11px; letter-spacing: 0.20em; color: var(--primary);">01 — SOBRE</span>
+    </div>
+    <div class="row">
+      <span class="meta">Eyebrow</span>
+      <span class="eyebrow">Projeto MTP-2026 · 2026</span>
+    </div>
+    <div class="row">
+      <span class="meta">Mono · 400</span>
+      <span class="mono" style="font-size: 10px; letter-spacing: 0.10em; color: var(--text-muted);">FASE ATUAL — ADQUIRINDO PEÇAS</span>
+    </div>
+  </div>
+</body>
+</html>

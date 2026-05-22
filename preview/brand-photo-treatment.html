@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); overflow:hidden; }
+  .wrap { display: flex; gap: 0; align-items: stretch; height: 240px; }
+  .panel {
+    flex: 1; position: relative; overflow: hidden;
+    border-right: 1px solid var(--border);
+  }
+  .panel:last-child { border-right: none; }
+  .panel::before {
+    content:''; position:absolute; inset: 0;
+    background-size: cover; background-position: center;
+  }
+  .nebula::before {
+    background-image: url('../assets/photos/7077.jpg');
+    opacity: 0.08;
+    filter: blur(2px);
+  }
+  .galaxy::before {
+    background-image: url('../assets/photos/R.jpg');
+    opacity: 0.055;
+    mask-image: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.7), transparent);
+  }
+  .telescope::before {
+    background-image: url('../assets/photos/telescopio-e1576107221750.jpg');
+    background-position: center bottom;
+    opacity: 0.15;
+    mix-blend-mode: screen;
+  }
+  .label {
+    position: absolute; left: 14px; top: 14px; z-index: 2;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary);
+  }
+  .meta {
+    position: absolute; left: 14px; bottom: 12px; z-index: 2;
+    font-family: var(--font-mono); font-size: 8.5px;
+    letter-spacing: 0.12em; color: var(--text-muted);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel nebula">
+      <span class="label">Nebula plate</span>
+      <span class="meta">7077.jpg<br>opacity 8%<br>blur 2px</span>
+    </div>
+    <div class="panel galaxy">
+      <span class="label">Galaxy wash</span>
+      <span class="meta">R.jpg<br>opacity 5.5%<br>masked gradient</span>
+    </div>
+    <div class="panel telescope">
+      <span class="label">Telescope plate</span>
+      <span class="meta">telescopio.jpg<br>opacity 15%<br>blend: screen</span>
+    </div>
+  </div>
+</body>
+</html>

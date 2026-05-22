@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 24px 26px; display:flex; flex-direction:column; gap: 14px; }
+  .row { display:flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .tag {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: 20px;
+    background: rgba(0,212,204,0.07); color: var(--primary);
+    border: 1px solid rgba(0,212,204,0.18);
+  }
+  .badge-on {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    background: rgba(0,212,204,0.10); color: var(--primary);
+    border: 1px solid rgba(0,212,204,0.28);
+  }
+  .badge-off {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    background: rgba(11,21,36,0.5); color: var(--text-muted);
+    border: 1px solid rgba(91,122,138,0.12);
+  }
+  .badge-alt {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    background: rgba(255,140,66,0.10); color: var(--secondary);
+    border: 1px solid rgba(255,140,66,0.28);
+  }
+  .label {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="label">Inline tag · doc entries</span>
+    <div class="row">
+      <span class="tag">Início</span>
+      <span class="tag">Entregável</span>
+      <span class="tag">Registro</span>
+      <span class="tag">Atualização</span>
+    </div>
+    <span class="label">Status pill · phase markers</span>
+    <div class="row">
+      <span class="badge-on">Em andamento</span>
+      <span class="badge-off">Bloqueado</span>
+      <span class="badge-alt">Atenção</span>
+    </div>
+  </div>
+</body>
+</html>

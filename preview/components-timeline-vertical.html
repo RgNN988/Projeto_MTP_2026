@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 28px; display:flex; flex-direction: column; gap: 14px; }
+  .doc-line {
+    position: relative; padding-left: 28px;
+  }
+  .doc-line::before {
+    content:''; position:absolute; top:6px; bottom:6px; left:0; width:1px;
+    background: linear-gradient(to bottom, var(--primary), rgba(0,212,204,0.12) 70%, transparent);
+  }
+  .doc-entry { position: relative; padding-bottom: 14px; }
+  .doc-entry:last-child { padding-bottom: 0; }
+  .doc-entry::before {
+    content:''; position:absolute; left: -28px; top: 8px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--primary); border: 2px solid var(--bg-deep);
+    box-shadow: 0 0 10px rgba(0,212,204,0.5);
+  }
+  .tag {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: 20px;
+    background: rgba(0,212,204,0.07); color: var(--primary);
+    border: 1px solid rgba(0,212,204,0.18); margin-bottom: 6px;
+  }
+  .title {
+    font-family: var(--font-display); font-size: 14px; font-weight: 700;
+    color: var(--text); letter-spacing: -0.02em; margin-bottom: 4px;
+  }
+  .body {
+    font-family: var(--font-body); font-size: 11px; font-weight: 300;
+    color: var(--text-muted); line-height: 1.6;
+    max-width: 540px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="doc-line">
+      <div class="doc-entry">
+        <span class="tag">Início</span>
+        <div class="title">Projeto Iniciado</div>
+        <div class="body">Definidos os parâmetros básicos do instrumento, escopo e os primeiros entregáveis.</div>
+      </div>
+      <div class="doc-entry">
+        <span class="tag">Entregável</span>
+        <div class="title">Fluxograma de Construção Concluído</div>
+        <div class="body">Todos os processos de montagem mapeados — do espelho primário à apresentação.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap {
+    padding: 22px 26px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .row { display: flex; gap: 12px; }
+  .sw {
+    flex: 1; height: 88px; border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .sw::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0.55;
+  }
+  .sw .name {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .sw .hex {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.1em; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <div class="sw" style="background:#030a14"><span class="name">bg-deep</span><span class="hex">#030A14</span></div>
+      <div class="sw" style="background:#0b1524"><span class="name">bg-surface</span><span class="hex">#0B1524</span></div>
+      <div class="sw" style="background:#111f35"><span class="name">bg-elevated</span><span class="hex">#111F35</span></div>
+    </div>
+    <div class="row">
+      <div class="sw" style="background:#00d4cc; border-color:rgba(0,0,0,0.2)"><span class="name" style="color:#030a14">primary</span><span class="hex" style="color:#030a14">#00D4CC</span></div>
+      <div class="sw" style="background:#ff8c42; border-color:rgba(0,0,0,0.2)"><span class="name" style="color:#1a0a00">secondary</span><span class="hex" style="color:#1a0a00">#FF8C42</span></div>
+      <div class="sw" style="background:rgba(0,212,204,0.10)"><span class="name">primary-dim</span><span class="hex">10% α</span></div>
+      <div class="sw" style="background:rgba(255,140,66,0.10)"><span class="name">secondary-dim</span><span class="hex">10% α</span></div>
+    </div>
+  </div>
+</body>
+</html>

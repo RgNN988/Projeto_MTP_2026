@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 22px 26px; display:flex; gap: 14px; align-items: stretch; }
+  .stat {
+    flex: 1;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.28);
+  }
+  .stat::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0.55;
+  }
+  .stat .num {
+    font-family: var(--font-display); font-weight: 800; font-size: 38px;
+    color: var(--primary); letter-spacing: -0.03em; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat.alt .num { color: var(--secondary); }
+  .stat .lbl {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="stat">
+      <div class="num">02</div>
+      <div class="lbl">Fase atual — Adquirindo peças</div>
+    </div>
+    <div class="stat">
+      <div class="num">04</div>
+      <div class="lbl">Entregáveis produzidos</div>
+    </div>
+    <div class="stat alt">
+      <div class="num">∞</div>
+      <div class="lbl">Estrelas a observar</div>
+    </div>
+  </div>
+</body>
+</html>

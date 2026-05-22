@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin:0; padding:0; background:var(--bg-deep); }
+  .wrap { padding: 24px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; align-items: baseline; gap: 18px; }
+  .meta {
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    min-width: 90px;
+  }
+  .display {
+    font-family: var(--font-display); font-weight: 800;
+    letter-spacing: -0.04em; line-height: 1.0;
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <span class="meta">Syne · 800</span>
+      <span class="display" style="font-size: 56px;">Projeto Telescópio</span>
+    </div>
+    <div class="row">
+      <span class="meta">Syne · 800</span>
+      <span class="display" style="font-size: 38px; background: linear-gradient(145deg,#fff 0%,#d8eaf0 35%,var(--primary) 72%,rgba(0,212,204,.55) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Evolução do Telescópio</span>
+    </div>
+    <div class="row">
+      <span class="meta">Syne · 700</span>
+      <span class="display" style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">Carta Morfológica</span>
+    </div>
+  </div>
+</body>
+</html>
