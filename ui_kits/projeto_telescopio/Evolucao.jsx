@@ -84,7 +84,10 @@ const PhaseCard = ({ num, name, desc, status, icon, badge }) => {
   );
 };
 
-const Evolucao = () => (
+const Evolucao = () => {
+  const isMobile = useIsMobile();
+  const cols = isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)';
+  return (
   <div
     style={{
       background:
@@ -96,7 +99,7 @@ const Evolucao = () => (
     <section
       id="evolucao"
       style={{
-        padding: '7rem 2.5rem',
+        padding: isMobile ? '4.5rem 1.25rem' : '7rem 2.5rem',
         maxWidth: '1180px',
         margin: '0 auto',
       }}
@@ -113,8 +116,8 @@ const Evolucao = () => (
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 0,
+          gridTemplateColumns: cols,
+          gap: isMobile ? '1.5rem' : 0,
           marginTop: '4rem',
           position: 'relative',
         }}
@@ -137,6 +140,7 @@ const Evolucao = () => (
       </div>
     </section>
   </div>
-);
+  );
+};
 
 window.Evolucao = Evolucao;

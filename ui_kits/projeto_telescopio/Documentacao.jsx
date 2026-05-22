@@ -61,9 +61,11 @@ const DocEntry = ({ tag, title, body }) => (
   </div>
 );
 
-const Documentacao = () => (
+const Documentacao = () => {
+  const isMobile = useIsMobile();
+  return (
   <section id="documentacao" aria-labelledby="doc-h2">
-    <div style={{ padding: '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
+    <div style={{ padding: isMobile ? '4.5rem 1.25rem' : '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
       <Eyebrow>04 — Registro</Eyebrow>
       <SectionTitle id="doc-h2">Documentação<br />do Projeto</SectionTitle>
       <SectionDesc>
@@ -103,6 +105,7 @@ const Documentacao = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 window.Documentacao = Documentacao;

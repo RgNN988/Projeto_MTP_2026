@@ -130,9 +130,11 @@ const EntregavelCard = ({ d, onOpen }) => {
   );
 };
 
-const Entregaveis = ({ onOpen }) => (
+const Entregaveis = ({ onOpen }) => {
+  const isMobile = useIsMobile();
+  return (
   <section id="entregaveis" aria-labelledby="ent-h2">
-    <div style={{ padding: '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
+    <div style={{ padding: isMobile ? '4.5rem 1.25rem' : '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
       <Eyebrow>03 — Trabalhos</Eyebrow>
       <SectionTitle id="ent-h2">Entregáveis<br />do Projeto</SectionTitle>
       <SectionDesc>
@@ -142,7 +144,7 @@ const Entregaveis = ({ onOpen }) => (
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
           gap: '1.5rem',
           marginTop: '3rem',
         }}
@@ -153,7 +155,8 @@ const Entregaveis = ({ onOpen }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 window.Entregaveis = Entregaveis;
 window.DELIVERABLES = DELIVERABLES;

@@ -59,7 +59,9 @@ const StatCard = ({ number, label, accent = 'primary', delay = 0 }) => {
   );
 };
 
-const Sobre = () => (
+const Sobre = () => {
+  const isMobile = useIsMobile();
+  return (
   <section id="sobre" style={{ position: 'relative', overflow: 'hidden' }} aria-labelledby="sobre-h2">
     {/* galaxy wash right side */}
     <div
@@ -79,7 +81,7 @@ const Sobre = () => (
     />
     <div
       style={{
-        padding: '7rem 2.5rem',
+        padding: isMobile ? '4.5rem 1.25rem' : '7rem 2.5rem',
         maxWidth: '1180px',
         margin: '0 auto',
         position: 'relative',
@@ -88,8 +90,8 @@ const Sobre = () => (
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '5rem',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '2.5rem' : '5rem',
           alignItems: 'start',
         }}
       >
@@ -113,6 +115,7 @@ const Sobre = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 window.Sobre = Sobre;

@@ -295,7 +295,18 @@ const Icons = {
   ),
 };
 
+// Responsive hook — returns true when screen width < breakpoint (default 768px)
+const useIsMobile = (bp = 768) => {
+  const [v, setV] = React.useState(() => window.innerWidth < bp);
+  React.useEffect(() => {
+    const fn = () => setV(window.innerWidth < bp);
+    window.addEventListener('resize', fn, { passive: true });
+    return () => window.removeEventListener('resize', fn);
+  }, [bp]);
+  return v;
+};
+
 Object.assign(window, {
   Eyebrow, SectionTitle, SectionDesc, Divider,
-  Tag, Badge, ButtonCta, ButtonSm, Icons,
+  Tag, Badge, ButtonCta, ButtonSm, Icons, useIsMobile,
 });

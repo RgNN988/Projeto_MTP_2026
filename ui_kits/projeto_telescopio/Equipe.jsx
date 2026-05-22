@@ -75,9 +75,13 @@ const MemberCard = ({ name, photo, initials }) => {
   );
 };
 
-const Equipe = () => (
+const Equipe = () => {
+  const isMobile = useIsMobile();
+  const isSmall = useIsMobile(480);
+  const cols = isSmall ? 'repeat(2, 1fr)' : isMobile ? 'repeat(3, 1fr)' : 'repeat(5, 1fr)';
+  return (
   <section id="equipe" aria-labelledby="equipe-h2">
-    <div style={{ padding: '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
+    <div style={{ padding: isMobile ? '4.5rem 1.25rem' : '7rem 2.5rem', maxWidth: '1180px', margin: '0 auto' }}>
       <Eyebrow>05 — Membros</Eyebrow>
       <SectionTitle id="equipe-h2">Equipe do<br />Projeto</SectionTitle>
       <SectionDesc>
@@ -87,7 +91,7 @@ const Equipe = () => (
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateColumns: cols,
           gap: '1.25rem',
           marginTop: '3rem',
         }}
@@ -96,6 +100,7 @@ const Equipe = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 window.Equipe = Equipe;

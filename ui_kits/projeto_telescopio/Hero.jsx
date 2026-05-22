@@ -27,6 +27,7 @@ const TelescopeArt = () => (
 );
 
 const Hero = () => {
+  const isMobile = useIsMobile(900);
   // Robust entry animation via React state — inline CSS `animation` with
   // delays can hang in some embed contexts (startTime stays null).
   const [mounted, setMounted] = React.useState(false);
@@ -63,7 +64,7 @@ const Hero = () => {
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: isMobile ? 'center' : 'flex-start',
       overflow: 'hidden',
     }}
     aria-labelledby="hero-h1"
@@ -124,10 +125,11 @@ const Hero = () => {
       style={{
         position: 'relative',
         zIndex: 10,
-        textAlign: 'left',
-        padding: '0 1.5rem 0 5rem',
-        maxWidth: '620px',
-        marginRight: 'auto',
+        textAlign: isMobile ? 'center' : 'left',
+        padding: isMobile ? '0 1.5rem' : '0 1.5rem 0 5rem',
+        maxWidth: isMobile ? '100%' : '620px',
+        marginRight: isMobile ? 'auto' : 'auto',
+        marginLeft: isMobile ? 'auto' : undefined,
         width: '100%',
       }}
     >
@@ -140,7 +142,7 @@ const Hero = () => {
           color: 'var(--primary)',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-start',
+          justifyContent: isMobile ? 'center' : 'flex-start',
           gap: '14px',
           marginBottom: '1.75rem',
         ...entry(0.3),
@@ -190,8 +192,8 @@ const Hero = () => {
       </div>
     </div>
 
-    {/* interactive 3D telescope — drag to rotate, auto-rotates when idle */}
-    <div
+    {/* interactive 3D telescope — hidden on mobile */}
+    {!isMobile && <div
       style={{
         position: 'absolute',
         right: '0',
@@ -230,7 +232,7 @@ const Hero = () => {
         <span style={{ width: '20px', height: '1px', background: 'currentColor', display: 'block' }} />
         Arraste para girar
       </div>
-    </div>
+    </div>}
 
     {/* scroll hint */}
     <div
