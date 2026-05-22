@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/ui_kits/projeto_telescopio/index.html" }
+  ]
+}
