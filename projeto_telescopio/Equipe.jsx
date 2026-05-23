@@ -1,16 +1,16 @@
 // Equipe.jsx — team avatar grid
 
 const TEAM = [
-  { name: 'Rogério De Lima Faria', photo: '../../assets/photos/foto_rogerio.png' },
-  { name: 'Arthur Tomé',           photo: '../../assets/photos/WhatsApp Image 2026-05-21 at 19.31.00.jpeg' },
-  { name: 'Augusto Castilione',    photo: '../../assets/photos/foto_augusto.png' },
-  { name: 'Ewerton Gomes',         photo: '../../assets/photos/foto_ewerton.png' },
-  { name: 'Jean Grossi',           photo: '../../assets/photos/foto_jean.png' },
-  { name: 'Gabriel Kaiuca',        photo: '../../assets/photos/foto_gabriel.png' },
-  { name: 'João Cardozo',          photo: '../../assets/photos/WhatsApp Image 2026-05-21 at 19.57.50.jpeg' },
-  { name: 'Lucas Oshiro',          photo: '../../assets/photos/WhatsApp Image 2026-05-21 at 23.07.57.jpeg' },
-  { name: 'Renné Bonson',          photo: '../../assets/photos/foto_renné.png' },
-  { name: 'Vinícius Maciel',       photo: '../../assets/photos/WhatsApp Image 2026-05-21 at 22.08.03.jpeg' },
+  { name: 'Rogério De Lima Faria', photo: './assets/photos/foto_rogerio.png' },
+  { name: 'Arthur Tomé',           photo: './assets/photos/WhatsApp Image 2026-05-21 at 19.31.00.jpeg' },
+  { name: 'Augusto Castilione',    photo: './assets/photos/foto_augusto.png' },
+  { name: 'Ewerton Gomes',         photo: './assets/photos/foto_ewerton.png' },
+  { name: 'Jean Grossi',           photo: './assets/photos/foto_jean.png' },
+  { name: 'Gabriel Kaiuca',        photo: './assets/photos/foto_gabriel.png' },
+  { name: 'João Cardozo',          photo: './assets/photos/WhatsApp Image 2026-05-21 at 19.57.50.jpeg' },
+  { name: 'Lucas Oshiro',          photo: './assets/photos/WhatsApp Image 2026-05-21 at 23.07.57.jpeg' },
+  { name: 'Renné Bonson',          photo: './assets/photos/foto_renné.png' },
+  { name: 'Vinícius Maciel',       photo: './assets/photos/WhatsApp Image 2026-05-21 at 22.08.03.jpeg' },
 ];
 
 const MemberCard = ({ name, photo, initials }) => {

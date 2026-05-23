@@ -70,7 +70,7 @@ const Sobre = () => {
         position: 'absolute',
         top: 0, right: '-8%',
         width: '52%', height: '100%',
-        backgroundImage: "url('../../assets/photos/R.jpg')",
+        backgroundImage: "url('./assets/photos/R.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: 0.055,

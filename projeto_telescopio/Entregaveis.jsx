@@ -17,7 +17,7 @@ const DELIVERABLES = [
     icon: 'Flow',
     accent: 'primary',
     contentType: 'image',
-    contentSrc: '../../assets/telescope_flowchart.png',
+    contentSrc: './assets/telescope_flowchart.png',
   },
   {
     id: 'personas',
