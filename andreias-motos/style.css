@@ -233,29 +233,35 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(204, 0, 0, 0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 80% at 0% 100%, rgba(201, 168, 76, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 65% 45%, rgba(140, 0, 0, 0.14) 0%, transparent 70%),
     var(--dark-bg);
+  animation: bg-breathe 8s ease-in-out infinite;
 }
 
-.hero-grid {
+@keyframes bg-breathe {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.85; }
+}
+
+/* Canvas partículas minimalistas */
+.hero-canvas {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(204, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(204, 0, 0, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 40%, transparent 100%);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .hero-line {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 15%;
+  bottom: 15%;
   left: 55%;
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--honda-red), transparent);
-  opacity: 0.3;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(204, 0, 0, 0.25), transparent);
+  z-index: 1;
 }
 
 .hero .container {
@@ -403,30 +409,16 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  z-index: 2;
 }
 
-.hero-img-bg {
+/* Glow suave atrás da foto */
+.hero-img-glow {
   position: absolute;
-  width: 85%;
-  height: 85%;
-  background: radial-gradient(ellipse, rgba(204, 0, 0, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  bottom: 0;
-}
-
-.hero-img-ring {
-  position: absolute;
-  width: 92%;
-  height: 92%;
-  border: 2px solid rgba(204, 0, 0, 0.2);
-  border-radius: 50%;
-  bottom: -5%;
-  animation: spin-slow 20s linear infinite;
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  inset: 10% 5%;
+  background: radial-gradient(ellipse at 50% 60%, rgba(140, 0, 0, 0.18) 0%, transparent 68%);
+  filter: blur(35px);
+  z-index: 0;
 }
 
 .hero-img-inner {
@@ -435,7 +427,24 @@ a { text-decoration: none; color: inherit; }
   max-height: 80vh;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 20px 60px rgba(204, 0, 0, 0.25));
+
+  /* Fade suave nas bordas */
+  mask-image: radial-gradient(
+    ellipse 80% 92% at 50% 42%,
+    black 30%,
+    rgba(0,0,0,0.85) 55%,
+    rgba(0,0,0,0.2) 78%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 92% at 50% 42%,
+    black 30%,
+    rgba(0,0,0,0.85) 55%,
+    rgba(0,0,0,0.2) 78%,
+    transparent 92%
+  );
+
+  filter: drop-shadow(0 8px 40px rgba(0, 0, 0, 0.6));
 }
 
 .hero-stats {
@@ -869,18 +878,20 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
   position: relative;
   background: var(--surface);
+  cursor: zoom-in;
 }
 
 .cliente-foto img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, filter 0.3s ease;
   display: block;
 }
 
 .cliente-foto:hover img {
   transform: scale(1.06);
+  filter: brightness(1.08);
 }
 
 .cliente-foto::after {
@@ -895,6 +906,72 @@ a { text-decoration: none; color: inherit; }
 
 .cliente-foto:hover::after {
   border-color: rgba(204, 0, 0, 0.5);
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.lightbox-img {
+  position: relative;
+  z-index: 1;
+  max-width: 88vw;
+  max-height: 86vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.06);
+  transform: scale(0.9);
+  transition: transform 0.38s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.lightbox.open .lightbox-img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.25s, color 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: rotate(90deg);
 }
 
 .clientes-note {
