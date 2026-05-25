@@ -1022,6 +1022,106 @@ a { text-decoration: none; color: inherit; }
   transform: translateX(4px);
 }
 
+/* ===== DEPOIMENTOS ===== */
+.depoimentos {
+  padding: 100px 0;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.depoimentos::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--honda-red), transparent);
+}
+
+.depoimentos-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.depoimentos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.dep-card {
+  background: var(--surface-2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  position: relative;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dep-card:hover {
+  border-color: rgba(204, 0, 0, 0.3);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-red);
+}
+
+.dep-quote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: var(--honda-red);
+  line-height: 0.6;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.dep-stars {
+  color: var(--gold);
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.dep-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  flex: 1;
+  font-style: italic;
+}
+
+.dep-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dep-avatar {
+  width: 42px;
+  height: 42px;
+  background: rgba(204, 0, 0, 0.15);
+  border: 1px solid rgba(204, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  color: var(--honda-red);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.dep-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+
 /* ===== FOOTER ===== */
 .footer {
   background: #080808;
@@ -1320,12 +1420,13 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 1024px) {
   .servicos-grid { grid-template-columns: repeat(3, 1fr); }
   .clientes-grid { grid-template-columns: repeat(3, 1fr); }
+  .depoimentos-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
   /* Espaçamento reduzido nas seções */
-  .sobre, .servicos, .porque, .clientes, .fale { padding: 64px 0; }
+  .sobre, .servicos, .porque, .clientes, .depoimentos, .fale { padding: 64px 0; }
   .numeros { padding: 52px 0; }
   .footer { padding: 48px 0 24px; }
 
@@ -1366,6 +1467,9 @@ a { text-decoration: none; color: inherit; }
   .numeros .container { grid-template-columns: 1fr; gap: 0; }
   .numero-item + .numero-item { border-left: none; border-top: 1px solid rgba(255,255,255,0.2); }
   .numero-item { padding: 16px; }
+
+  /* Depoimentos */
+  .depoimentos-grid { grid-template-columns: 1fr; }
 
   /* Fale */
   .fale-grid { grid-template-columns: 1fr; }
