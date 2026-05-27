@@ -7,7 +7,8 @@ const DELIVERABLES = [
     desc: 'Mapeamento das soluções construtivas e combinações possíveis para cada subsistema do telescópio.',
     icon: 'Doc',
     accent: 'primary',
-    contentType: 'placeholder',
+    contentType: 'pdf',
+    contentSrc: './trabalhos/MTP- Carta morfológica.pdf',
     contentLabel: 'PDF · carta morfológica',
   },
   {
@@ -25,7 +26,8 @@ const DELIVERABLES = [
     desc: 'Perfis detalhados dos usuários que poderão utilizar o telescópio — objetivos, contextos e necessidades identificadas.',
     icon: 'People',
     accent: 'primary',
-    contentType: 'placeholder',
+    contentType: 'pdf',
+    contentSrc: './trabalhos/Slides Personas (1).pdf',
     contentLabel: 'PDF · personas',
   },
   {
@@ -34,7 +36,8 @@ const DELIVERABLES = [
     desc: 'Metas e diretrizes estabelecidas para o desenvolvimento do telescópio, com critérios de sucesso e escopo técnico definido.',
     icon: 'Target',
     accent: 'secondary',
-    contentType: 'placeholder',
+    contentType: 'pdf',
+    contentSrc: './trabalhos/Objetivos.pdf',
     contentLabel: 'PDF · objetivos',
   },
 ];

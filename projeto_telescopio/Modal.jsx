@@ -88,75 +88,20 @@ const Modal = ({ open, deliverable, onClose }) => {
             <Icons.Close />
           </button>
         </div>
-        <div style={{ flex: 1, overflow: 'auto', minHeight: '300px' }}>
+        <div style={{ flex: 1, overflow: 'auto', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
           {deliverable && deliverable.contentType === 'image' ? (
             <img
               src={deliverable.contentSrc}
               alt={deliverable.title}
               style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain', padding: '1rem', maxHeight: '78vh' }}
             />
-          ) : (
-            <div
-              style={{
-                minHeight: '380px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '14px',
-                padding: '3rem 2rem',
-                color: 'var(--text-muted)',
-                textAlign: 'center',
-              }}
-            >
-              <div
-                style={{
-                  width: '60px', height: '60px',
-                  borderRadius: '12px',
-                  background: 'var(--primary-dim)',
-                  border: '1px solid rgba(0,212,204,0.18)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}
-              >
-                <Icons.Doc width="28" height="28" />
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '10px',
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  color: 'var(--primary)',
-                }}
-              >
-                {deliverable && deliverable.contentLabel}
-              </div>
-              <p
-                style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 300,
-                  fontSize: '0.95rem',
-                  maxWidth: '420px',
-                  lineHeight: 1.7,
-                  margin: 0,
-                }}
-              >
-                {deliverable && deliverable.desc}
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: '9px',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(91,122,138,0.5)',
-                  marginTop: '14px',
-                }}
-              >
-                PDF não disponível neste kit de demonstração
-              </p>
-            </div>
-          )}
+          ) : deliverable && deliverable.contentType === 'pdf' ? (
+            <iframe
+              src={deliverable.contentSrc}
+              title={deliverable.title}
+              style={{ flex: 1, width: '100%', height: '75vh', border: 'none', display: 'block' }}
+            />
+          ) : null}
         </div>
       </div>
     </div>
